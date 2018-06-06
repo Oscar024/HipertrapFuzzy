@@ -70,4 +70,4 @@ tipping.compute()
 
 print(tipping.output['BP_Levels'])
 
-# tip.view(sim=tipping)
+BP_Levels.view(sim=tipping)
