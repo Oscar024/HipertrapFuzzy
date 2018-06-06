@@ -1,0 +1,79 @@
+[System]
+Name='Hipertrap'
+Type='mamdani'
+Version=2.0
+NumInputs=2
+NumOutputs=1
+NumRules=26
+AndMethod='min'
+OrMethod='max'
+ImpMethod='min'
+AggMethod='max'
+DefuzzMethod='centroid'
+
+[Input1]
+Name='Systolic'
+Range=[20 300]
+NumMFs=7
+MF1='Low':'trapmf',[20 44.0740740740741 67 94]
+MF2='Normal':'trapmf',[118 120.37037037037 130 131]
+MF3='High':'trapmf',[138 146 157 161]
+MF4='Very_high':'trapmf',[158 167 180 183]
+MF5='Low_Normal':'trapmf',[86.3 92.962962962963 112 122]
+MF6='High_Normal':'trapmf',[128 134 140 141]
+MF7='too_high':'trapmf',[179 207 274 300]
+
+[Input2]
+Name='Diastolic'
+Range=[20 130]
+NumMFs=7
+MF1='Low':'trapmf',[20 29.7 46.3 62]
+MF2='Low_Normal':'trapmf',[60 63.8 73.1084656084656 80]
+MF3='High_Normal':'trapmf',[83.9 85.6216931216931 89.1 90.9]
+MF4='Very_High':'trapmf',[98.4 102 106.865079365079 111]
+MF5='Too_High':'trapmf',[108 114 123.743386243386 130]
+MF6='Normal':'trapmf',[78 78.3465608465608 83.3 86]
+MF7='High':'trapmf',[88.531746031746 91.9 97.3 101]
+
+[Output1]
+Name='BP_Levels'
+Range=[0 100]
+NumMFs=10
+MF1='Hipotension':'trapmf',[0 5.69 12.3015873015873 18.5]
+MF2='Optimal':'trapmf',[16.1 23.4126984126984 32.9 41.6]
+MF3='Normal':'trapmf',[39.9 41.1375661375661 46.2 49.1]
+MF4='High_Normal':'trapmf',[47.7 50.3968253968254 53.3 55.6]
+MF5='Grade_1':'trapmf',[58.5 62.3 66.2698412698413 67.8]
+MF6='Grade_2':'trapmf',[70.7 74.2063492063492 77.4 79.2]
+MF7='Grade_3':'trapmf',[83 87.7 95.8994708994709 100]
+MF8='ISH1':'trapmf',[53.7 56.2169312169312 59.9 60.5]
+MF9='ISH2':'trapmf',[66.4 68.3862433862434 71.8 72]
+MF10='ISH3':'trapmf',[77.7 80.6 84.5 84.7]
+
+[Rules]
+1 1, 1 (1) : 1
+5 2, 2 (1) : 1
+2 6, 3 (1) : 1
+6 3, 4 (1) : 1
+3 7, 5 (1) : 1
+4 4, 6 (1) : 1
+7 5, 7 (1) : 1
+4 7, 6 (1) : 1
+7 4, 7 (1) : 1
+7 7, 7 (1) : 1
+3 4, 6 (1) : 1
+3 5, 7 (1) : 1
+4 5, 7 (1) : 1
+3 6, 8 (1) : 1
+3 3, 8 (1) : 1
+4 6, 9 (1) : 1
+4 3, 9 (1) : 1
+7 6, 10 (1) : 1
+7 3, 10 (1) : 1
+2 7, 5 (1) : 1
+3 2, 8 (1) : 1
+4 2, 9 (1) : 1
+7 2, 10 (1) : 1
+2 2, 3 (1) : 1
+5 1, 2 (1) : 1
+2 7, 5 (1) : 1
