@@ -1,88 +1,79 @@
 import numpy as np
 import skfuzzy as fuzz
-import matplotlib.pyplot as plt
+from skfuzzy import control as ctrl
 
 
-x_Systolic = np.arange(0, 300, 1)
-x_Diastolic = np.arange(0, 300, 1)
-x_BP_levels  = np.arange(0, 100, 1)
 
-#Inputs of the FLC
+Systolic = ctrl.Antecedent(np.arange(20, 300 ,1), "Systolic")
+Systolic["Low"] = fuzz.trapmf(Systolic.universe, [20, 44.0741, 67, 94])
+Systolic["Normal"] = fuzz.trapmf(Systolic.universe, [118, 120.3704, 130, 131])
+Systolic["High"] = fuzz.trapmf(Systolic.universe, [138, 146, 157, 161])
+Systolic["Very_high"] = fuzz.trapmf(Systolic.universe, [158, 167, 180, 183])
+Systolic["Low_Normal"] = fuzz.trapmf(Systolic.universe, [86.3, 92.963, 112, 122])
+Systolic["High_Normal"] = fuzz.trapmf(Systolic.universe, [128, 134, 140, 141])
+Systolic["too_high"] = fuzz.trapmf(Systolic.universe, [179, 207, 274, 300])
+Diastolic = ctrl.Antecedent(np.arange(20, 130 ,1), "Diastolic")
+Diastolic["Low"] = fuzz.trapmf(Diastolic.universe, [20, 29.7, 46.3, 62])
+Diastolic["Low_Normal"] = fuzz.trapmf(Diastolic.universe, [60, 63.8, 73.1085, 80])
+Diastolic["High_Normal"] = fuzz.trapmf(Diastolic.universe, [83.9, 85.6217, 89.1, 90.9])
+Diastolic["Very_High"] = fuzz.trapmf(Diastolic.universe, [98.4, 102, 106.8651, 111])
+Diastolic["Too_High"] = fuzz.trapmf(Diastolic.universe, [108, 114, 123.7434, 130])
+Diastolic["Normal"] = fuzz.trapmf(Diastolic.universe, [78, 78.3466, 83.3, 86])
+Diastolic["High"] = fuzz.trapmf(Diastolic.universe, [88.5317, 91.9, 97.3, 101])
+BP_Levels = ctrl.Consequent(np.arange(0, 100 ,1), "BP_Levels")
+BP_Levels["Hipotension"] = fuzz.trapmf(BP_Levels.universe, [0, 5.69, 12.3016, 18.5])
+BP_Levels["Optimal"] = fuzz.trapmf(BP_Levels.universe, [16.1, 23.4127, 32.9, 41.6])
+BP_Levels["Normal"] = fuzz.trapmf(BP_Levels.universe, [39.9, 41.1376, 46.2, 49.1])
+BP_Levels["High_Normal"] = fuzz.trapmf(BP_Levels.universe, [47.7, 50.3968, 53.3, 55.6])
+BP_Levels["Grade_1"] = fuzz.trapmf(BP_Levels.universe, [58.5, 62.3, 66.2698, 67.8])
+BP_Levels["Grade_2"] = fuzz.trapmf(BP_Levels.universe, [70.7, 74.2063, 77.4, 79.2])
+BP_Levels["Grade_3"] = fuzz.trapmf(BP_Levels.universe, [83, 87.7, 95.8995, 100])
+BP_Levels["ISH1"] = fuzz.trapmf(BP_Levels.universe, [53.7, 56.2169, 59.9, 60.5])
+BP_Levels["ISH2"] = fuzz.trapmf(BP_Levels.universe, [66.4, 68.3862, 71.8, 72])
+BP_Levels["ISH3"] = fuzz.trapmf(BP_Levels.universe, [77.7, 80.6, 84.5, 84.7])
 
-#Membership functions of systolic
-Systolic_Low = fuzz.trapmf(x_Systolic,[20,44.07,67,94])
-Systolic_LowNormal = fuzz.trapmf(x_Systolic, [86.3 ,92.96, 112 ,122])
-Systolic_Normal = fuzz.trapmf(x_Systolic, [118 ,120.4 ,130 ,131])
-Systolic_HighNormal = fuzz.trapmf(x_Systolic, [128 ,134 ,140 ,141])
-Systolic_High= fuzz.trapmf(x_Systolic, [138 ,146, 157, 161])
-Systolic_VeryHigh = fuzz.trapmf(x_Systolic, [158, 167, 180 ,183])
-Systolic_tooHigh = fuzz.trapmf(x_Systolic, [179 ,207, 274 ,300])
-
-#Membership functions of Diastolic
-Diastolic_Low = fuzz.trapmf(x_Diastolic, [20, 29.7, 46.3, 62])
-Diastolic_LowNormal=fuzz.trapmf(x_Diastolic, [60, 63.8, 73.11, 80])
-Diastolic_Normal=fuzz.trapmf(x_Diastolic, [78, 78.35, 83.3, 86])
-Diastolic_HighNormal=fuzz.trapmf(x_Diastolic, [83.9, 85.62, 89.1, 90.9])
-Diastolic_High=fuzz.trapmf(x_Diastolic, [88.53, 91.9, 97.3, 101])
-Diastolic_VeryHigh=fuzz.trapmf(x_Diastolic, [98.4, 102, 106.9, 111])
-Diastolic_tooHigh=fuzz.trapmf(x_Diastolic, [108, 114, 123.7, 130])
 
 
-#Output of the FLC
-#Membership functions of BP Levels
-Hipotension=fuzz.trapmf(x_BP_levels, [0, 5.69, 12.3, 18.5])
-Optimal = fuzz.trapmf(x_BP_levels, [16.1, 23.41, 32.9, 41.6])
-Normal = fuzz.trapmf(x_BP_levels, [39.9, 41.14, 46.2, 49.1])
-High_Normal= fuzz.trapmf(x_BP_levels, [47.7, 50.4, 53.3, 55.6])
-ISH1= fuzz.trapmf(x_BP_levels, [53.7, 56.22, 59.9, 60.5] )
-Grade1=fuzz.trapmf(x_BP_levels, [58.5, 62.3, 66.27, 67.8])
-ISH2=fuzz.trapmf(x_BP_levels, [66.4, 68.39, 71.8, 72])
-Grade2= fuzz.trapmf(x_BP_levels, [70.7, 74.21, 77.4, 79.2])
-ISH3= fuzz.trapmf(x_BP_levels, [77.7, 80.6, 84.5, 84.7])
-Grade3 = fuzz.trapmf(x_BP_levels, [83, 87.7, 95.9, 100])
 
-# Visualize these universes and membership functions
-fig, (ax0, ax1, ax2) = plt.subplots(nrows=3, figsize=(8, 9))
+rule1 = ctrl.Rule(Systolic["Low"]|Diastolic["Low"] ,BP_Levels["Hipotension"])
+rule2 = ctrl.Rule(Systolic["Low_Normal"]|Diastolic["Low_Normal"] ,BP_Levels["Optimal"])
+rule3 = ctrl.Rule(Systolic["Normal"]|Diastolic["Normal"] ,BP_Levels["Normal"])
+rule4 = ctrl.Rule(Systolic["High_Normal"]|Diastolic["High_Normal"] ,BP_Levels["High_Normal"])
+rule5 = ctrl.Rule(Systolic["High"]|Diastolic["High"] ,BP_Levels["High_Normal"])
+rule6 = ctrl.Rule(Systolic["Very_high"]|Diastolic["Very_High"] ,BP_Levels["Grade_2"])
+rule7 = ctrl.Rule(Systolic["too_high"]|Diastolic["Too_High"] ,BP_Levels["Grade_3"])
+rule8 = ctrl.Rule(Systolic["Very_high"]|Diastolic["High"] ,BP_Levels["Grade_2"])
+rule9 = ctrl.Rule(Systolic["too_high"]|Diastolic["Very_High"] ,BP_Levels["Grade_3"])
+rule10 = ctrl.Rule(Systolic["too_high"]|Diastolic["High"] ,BP_Levels["Grade_3"])
+rule11= ctrl.Rule(Systolic["High"]|Diastolic["Very_High"] ,BP_Levels["Grade_2"])
+rule12 = ctrl.Rule(Systolic["High"]|Diastolic["Too_High"] ,BP_Levels["Grade_3"])
+rule13= ctrl.Rule(Systolic["Very_high"]|Diastolic["Too_High"] ,BP_Levels["Grade_3"])
+rule14 = ctrl.Rule(Systolic["High"]|Diastolic["Normal"] ,BP_Levels["ISH1"])
+rule15= ctrl.Rule(Systolic["High"]|Diastolic["High_Normal"] ,BP_Levels["ISH1"])
+rule16= ctrl.Rule(Systolic["Very_high"]|Diastolic["Normal"] ,BP_Levels["ISH2"])
+rule17 = ctrl.Rule(Systolic["Very_high"]|Diastolic["High_Normal"] ,BP_Levels["ISH2"])
+rule18= ctrl.Rule(Systolic["too_high"]|Diastolic["Normal"] ,BP_Levels["ISH3"])
+rule19= ctrl.Rule(Systolic["too_high"]|Diastolic["High_Normal"] ,BP_Levels["ISH3"])
+rule20= ctrl.Rule(Systolic["Normal"]|Diastolic["High"] ,BP_Levels["Grade_1"])
+rule21 = ctrl.Rule(Systolic["High"]|Diastolic["Low_Normal"] ,BP_Levels["ISH1"])
+rule22 = ctrl.Rule(Systolic["Very_high"]|Diastolic["Low_Normal"] ,BP_Levels["ISH2"])
+rule23 = ctrl.Rule(Systolic["too_high"]|Diastolic["Low_Normal"] ,BP_Levels["ISH3"])
+rule24= ctrl.Rule(Systolic["Normal"]|Diastolic["Low_Normal"] ,BP_Levels["Normal"])
+rule25= ctrl.Rule(Systolic["Low_Normal"]|Diastolic["Low"] ,BP_Levels["Optimal"])
+rule26= ctrl.Rule(Systolic["Normal"]|Diastolic["High"] ,BP_Levels["Grade_1"])
 
-ax0.plot(x_Systolic,Systolic_Low , 'b', linewidth=1.5, label='Systolic_Low')
-ax0.plot(x_Systolic, Systolic_LowNormal, 'g', linewidth=1.5, label='Systolic_LowNormal')
-ax0.plot(x_Systolic, Systolic_Normal, 'r', linewidth=1.5, label='Systolic_Normal')
-ax0.plot(x_Systolic, Systolic_HighNormal, 'g', linewidth=1.5, label='Systolic_HighNormal')
-ax0.plot(x_Systolic, Systolic_High, 'r', linewidth=1.5, label='Systolic_High')
-ax0.plot(x_Systolic, Systolic_VeryHigh, 'g', linewidth=1.5, label='Systolic_VeryHigh')
-ax0.plot(x_Systolic, Systolic_tooHigh, 'r', linewidth=1.5, label='Systolic_tooHigh')
-ax0.set_title('systolic')
-ax0.legend()
+rule1.view()
 
-ax1.plot(x_Diastolic, Diastolic_Low, 'b', linewidth=1.5, label='Diastolic_Low')
-ax1.plot(x_Diastolic, Diastolic_LowNormal, 'g', linewidth=1.5, label='Diastolic_LowNormal')
-ax1.plot(x_Diastolic, Diastolic_Normal, 'r', linewidth=1.5, label='Diastolic_Normal')
-ax1.plot(x_Diastolic, Diastolic_HighNormal, 'g', linewidth=1.5, label='Diastolic_HighNormal')
-ax1.plot(x_Diastolic, Diastolic_High, 'r', linewidth=1.5, label='Diastolic_High')
-ax1.plot(x_Diastolic, Diastolic_VeryHigh, 'g', linewidth=1.5, label='Diastolic_VeryHigh')
-ax1.plot(x_Diastolic, Diastolic_tooHigh, 'r', linewidth=1.5, label='Diastolic_tooHigh')
-ax1.set_title('Diastolic')
-ax1.legend()
+tipping_ctrl = ctrl.ControlSystem([rule1, rule2, rule3,rule4,rule5,rule6,rule7,rule8,rule9,rule10,rule11,rule12,rule13,rule14,rule15,rule16,rule17,rule18,rule19,rule20,rule21,rule22,rule23,rule24,rule25,rule26])
+tipping = ctrl.ControlSystemSimulation(tipping_ctrl)
 
-ax2.plot(x_BP_levels,Hipotension , 'b', linewidth=1.5, label='Hipotension')
-ax2.plot(x_BP_levels, Optimal, 'g', linewidth=1.5, label='Optimal')
-ax2.plot(x_BP_levels,Normal , 'r', linewidth=1.5, label='Normal')
-ax2.plot(x_BP_levels,High_Normal , 'g', linewidth=1.5, label='High_Normal')
-ax2.plot(x_BP_levels, ISH1, 'r', linewidth=1.5, label='ISH1')
-ax2.plot(x_BP_levels,Grade1 , 'g', linewidth=1.5, label='Grade1')
-ax2.plot(x_BP_levels, ISH2, 'r', linewidth=1.5, label='ISH2')
-ax2.plot(x_BP_levels,Grade2 , 'g', linewidth=1.5, label='Grade2')
-ax2.plot(x_BP_levels,ISH3 , 'g', linewidth=1.5, label='ISH3')
-ax2.plot(x_BP_levels,Grade3 , 'r', linewidth=1.5, label='Grade3')
 
-ax2.set_title('BP Levels')
-ax2.legend()
 
-# Turn off top/right axes
-for ax in (ax0, ax1, ax2):
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
-    ax.get_xaxis().tick_bottom()
-    ax.get_yaxis().tick_left()
+tipping.input['Systolic']=160
+tipping.input['Diastolic']=75
+# Crunch the numbers
+tipping.compute()
 
-plt.show()
+print (tipping.output['BP_Levels'])
+
+#tip.view(sim=tipping)
