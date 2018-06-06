@@ -63,11 +63,11 @@ tipping_ctrl = ctrl.ControlSystem(
      rule16, rule17, rule18, rule19, rule20, rule21, rule22, rule23, rule24, rule25])
 tipping = ctrl.ControlSystemSimulation(tipping_ctrl)
 
-tipping.input['Systolic'] = 160
-tipping.input['Diastolic'] = 75
+tipping.input['Systolic'] = 211
+tipping.input['Diastolic'] = 101
 # Crunch the numbers
 tipping.compute()
 
 print(tipping.output['BP_Levels'])
 
-BP_Levels.view(sim=tipping)
+#BP_Levels.view(sim=tipping)
