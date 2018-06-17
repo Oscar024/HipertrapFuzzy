@@ -34,6 +34,7 @@ def hiper(Sys,Dias):
     BP_Levels["ISH2"] = fuzz.trapmf(BP_Levels.universe, [66.4, 68.3862, 71.8, 72])
     BP_Levels["ISH3"] = fuzz.trapmf(BP_Levels.universe, [77.7, 80.6, 84.5, 84.7])
 
+
     rule1 = ctrl.Rule(Systolic["Low"] & Diastolic["Low"], BP_Levels["Hipotension"])
     rule2 = ctrl.Rule(Systolic["Low_Normal"] & Diastolic["Low_Normal"], BP_Levels["Optimal"])
     rule3 = ctrl.Rule(Systolic["Normal"] & Diastolic["Normal"], BP_Levels["Normal"])
